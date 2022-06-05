@@ -1,0 +1,14 @@
+spacy
+spacy-transformers
+flask
+easyocr
+numpy
+pandas
+glob2
+sklearn
+pillow
+requests
+PyMuPDF
+PyPDF2
+opencv-python
+nltk
