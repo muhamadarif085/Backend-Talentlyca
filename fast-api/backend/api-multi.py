@@ -8,9 +8,11 @@ from fastapi.responses import HTMLResponse
 from fastapi import FastAPI, File, Form, UploadFile, BackgroundTasks
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 import sys
 import shutil
 import concurrent
+import https_redirect
 import asyncio
 # Add path to system path
 
@@ -35,6 +37,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(HTTPSRedirectMiddleware)
 
 sys.path.append(config["ML_DIR_PATH"])
 from prediction.main import predict as pd
@@ -102,7 +106,9 @@ async def predict(uid: str, file: UploadFile, background_tasks: BackgroundTasks)
 
 def main():
     uvicorn.run("api-multi:app", host="0.0.0.0",
-                port=int(config["PORT"]), reload=False, workers=4)
+                port=int(config["PORT"]), reload=False, workers=4,
+                ssl_keyfile='/home/c2284f2446/private.key',
+                ssl_certfile='/home/c2284f2446/certificate.crt')
 
 
 if __name__ == "__main__":
